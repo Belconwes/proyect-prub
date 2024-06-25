@@ -1,0 +1,32 @@
+﻿@model List<Stock>
+
+<h1>Listado de Stock</h1>
+
+<p>
+    @Html.ActionLink("Agregar Nuevo Stock", "Create", null, new { @class = "btn btn-primary" })
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Producto</th>
+            <th>Proveedor</th>
+            <th>Cantidad</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var stock in Model)
+        {
+            <tr>
+                <td>@stock.Producto.Nombre</td>
+                <td>@stock.Proveedor.Nombre</td>
+                <td>@stock.Cantidad</td>
+                <td>
+                    @Html.ActionLink("Editar", "Edit", new { id = stock.StockId }, new { @class = "btn btn-primary btn-sm" })
+                    @Html.ActionLink("Eliminar", "Delete", new { id = stock.StockId }, new { @class = "btn btn-danger btn-sm" })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

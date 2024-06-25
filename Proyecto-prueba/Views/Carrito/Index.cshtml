@@ -1,0 +1,45 @@
+﻿@model IEnumerable<Proyecto_prueba.Models.Carrito>
+
+@{
+    ViewData["Title"] = "Carrito";
+}
+
+<h2>Carrito de compras</h2>
+
+@if (Model.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Producto</th>
+                <th>Cantidad</th>
+                <th>Precio</th>
+                <th>Total</th>
+                <th>Acción</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Producto.Nombre</td>
+                    <td>@item.Cantidad</td>
+                    <td>@item.Producto.Price</td>
+                    <td>@(item.Cantidad * item.Producto.Price).ToString("C")</td>
+                    <td>
+                        <form asp-action="RemoveFromCarrito" method="post">
+                            <input type="hidden" name="carritoId" value="@item.CarritoId" />
+                            <button type="submit" class="btn btn-danger">Eliminar</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No hay productos en el carrito.</p>
+}
+
+<a href="@Url.Action("Index", "Producto")" class="btn btn-primary">Continuar comprando</a>

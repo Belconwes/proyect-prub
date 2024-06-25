@@ -1,0 +1,46 @@
+﻿@model IEnumerable<Proyecto_prueba.Models.Producto>
+@using System.Security.Claims;
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    @if (User.Identity!.IsAuthenticated)
+    {
+        <h1 class="display-4">
+            Welcome
+            @User.Claims.Where(c => c.Type == ClaimTypes.Name).Select(c => c.Value).SingleOrDefault()
+        </h1>
+
+    }
+    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+
+<div class="container mt-4">
+    <h2>Lista de Productos</h2>
+    <div class="row">
+        @foreach (var producto in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    @if (producto.ImagenProducto != null && producto.ImagenProducto.Length > 0)
+                    {
+                        <img src="data:image;base64,@Convert.ToBase64String(producto.ImagenProducto)" class="card-img-top" alt="Imagen del Producto">
+                    }
+                    <div class="card-body">
+                        <h5 class="card-title">@producto.Nombre</h5>
+                        <p class="card-text">Precio: @producto.Price?.ToString("C")</p>
+                        <p class="card-text">@producto.Descripcion</p>
+                        <a href="@Url.Action("Details", "Productoes", new { id = producto.ProductoId })" class="btn btn-primary">Ver Detalles</a>
+                        <form asp-action="AddToCarrito" asp-controller="Carrito">
+                            <input type="hidden" name="productoId" value="@producto.ProductoId" />
+                            <input type="number" name="cantidad" value="1" /> <!-- Aquí puedes poner un campo para la cantidad -->
+                            <button type="submit">Añadir al Carrito</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
