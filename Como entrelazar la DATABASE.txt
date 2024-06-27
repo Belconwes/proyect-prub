@@ -1,0 +1,12 @@
+Scaffold-DbContext "Server=(local); DataBase="Insertar tu db"; Trusted_Connection=True; TrustServerCertificate=True;" Microsoft.EntityFrameworkCore.SqlServer -OutPutDir Models
+
+despues modificar
+program.cs:
+builder.Services.AddDbContext<PruebafContext>(Options =>
+{
+    Options.UseSqlServer(builder.Configuration.GetConnectionString("Colocar el nombre de tu conexion"));
+});
+
+y en appsettings.json:
+"ConnectionStrings": {
+  "Ponerle nombre a la conexion": "Server=(local); DataBase="Insertar tu db"; Trusted_Connection=True; TrustServerCertificate=True;"
