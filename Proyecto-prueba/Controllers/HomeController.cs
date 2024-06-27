@@ -22,7 +22,7 @@ namespace Proyecto_prueba.Controllers
             var productos = await _context.Productos.ToListAsync();
             return View(productos);
         }
-        [Authorize(policy: "AdminOnly")]
+        [Authorize(policy: "AdminOrEmployedOnly")]
         public IActionResult Privacy()
         {
             return View();

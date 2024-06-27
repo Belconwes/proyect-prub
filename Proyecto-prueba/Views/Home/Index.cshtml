@@ -5,7 +5,6 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
     @if (User.Identity!.IsAuthenticated)
     {
         <h1 class="display-4">
@@ -14,7 +13,6 @@
         </h1>
 
     }
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
 
 <div class="container mt-4">
@@ -33,10 +31,12 @@
                         <p class="card-text">Precio: @producto.Price?.ToString("C")</p>
                         <p class="card-text">@producto.Descripcion</p>
                         <a href="@Url.Action("Details", "Productoes", new { id = producto.ProductoId })" class="btn btn-primary">Ver Detalles</a>
-                        <form asp-action="AddToCarrito" asp-controller="Carrito">
+                        <form asp-action="AddToCarrito" asp-controller="Carrito" class="mt-2">
+
                             <input type="hidden" name="productoId" value="@producto.ProductoId" />
-                            <input type="number" name="cantidad" value="1" /> <!-- Aquí puedes poner un campo para la cantidad -->
-                            <button type="submit">Añadir al Carrito</button>
+                            <input type="hidden" name="cantidad" value="1" /> <!-- Agrega cantidad de valor de 1 unidad por defecto -->
+                            
+                            <button type="submit" class="btn btn-success">Añadir al Carrito</button>
                         </form>
                     </div>
                 </div>

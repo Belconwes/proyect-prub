@@ -78,6 +78,7 @@ namespace Proyecto_prueba.Controllers
             }
             List<Claim> claims = new List<Claim>()
             {
+                new Claim(ClaimTypes.NameIdentifier, usuario_found.IdUser.ToString()),
                 new Claim(ClaimTypes.Name,usuario_found.Nombre)
 
             };

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Proyecto_prueba.Models;
 
@@ -57,9 +58,25 @@ namespace Proyecto_prueba.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(usuario);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                try
+                {
+                    _context.Add(usuario);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (DbUpdateException ex)
+                {
+                    // Manejar la excepción de truncamiento específicamente para el campo Rol
+                    if (ex.InnerException is SqlException sqlException && sqlException.Number == 8152)
+                    {
+                        ModelState.AddModelError("Rol", "El valor del campo Rol es demasiado largo.");
+                    }
+                    else
+                    {
+                        // Manejar otras excepciones o lanzarlas si es necesario
+                        throw;
+                    }
+                }
             }
             return View(usuario);
         }
@@ -71,7 +88,7 @@ namespace Proyecto_prueba.Controllers
             {
                 return NotFound();
             }
-
+            
             var usuario = await _context.Usuarios.FindAsync(id);
             if (usuario == null)
             {

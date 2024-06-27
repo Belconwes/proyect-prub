@@ -5,6 +5,7 @@ using Proyecto_prueba.Models;
 using Microsoft.AspNetCore.Authorization;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Security.Claims;
 
 
 namespace Proyecto_prueba.Controllers
@@ -40,55 +41,45 @@ namespace Proyecto_prueba.Controllers
         [HttpPost]
         public async Task<IActionResult> AddToCarrito(int productoId, int cantidad)
         {
-            Console.WriteLine("Pasa por aca 1");
-            var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
-            if (userId != null)
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            Console.WriteLine("Name user: " + userId);
+
+            if (userId != null && int.TryParse(userId, out int userIdInt))
             {
-                Console.WriteLine("Pasa por aca 1.2");
-                return Unauthorized();
+                Console.WriteLine("Pasa por aca 1.1");
+                // Lógica para usuarios autenticados
+                var pedido = await _context.Pedidos
+                    .FirstOrDefaultAsync(p => p.UsuarioId == userIdInt);
+
+                if (pedido == null)
+                {
+                    pedido = new Pedido
+                    {
+                        UsuarioId = userIdInt,
+                        Fecha = DateOnly.FromDateTime(DateTime.Now),
+                    };
+
+                    _context.Pedidos.Add(pedido);
+                    await _context.SaveChangesAsync();
+                }
+
+                var carrito = new Carrito
+                {
+                    PedidoId = pedido.PedidoId,
+                    ProductoId = productoId,
+                    Cantidad = cantidad,
+                    Estado = false
+                };
+
+                _context.Carritos.Add(carrito);
+                await _context.SaveChangesAsync();
             }
             else
             {
-                // Usuario no autenticado
-                Console.WriteLine("Usuario no autenticado.");
-
-                // Aquí puedes implementar la lógica para agregar el producto al carrito
-                // para usuarios no autenticados. Por ejemplo, podrías guardar la selección
-                // en una sesión o en cookies.
-
-                
+                Console.WriteLine("Pasa por aca 1.2");
+                // Lógica para usuarios no autenticados usando cookies
+                AddToCarritoInCookies(productoId, cantidad);
             }
-
-            // Obtener o crear un Pedido para el usuario
-            var pedido = await _context.Pedidos
-                .FirstOrDefaultAsync(p => p.UsuarioId.ToString() == userId);
-
-            if (pedido == null)
-            {
-                Console.WriteLine("Pasa por aca 1.3");
-                pedido = new Pedido
-                {
-                    Fecha = DateOnly.FromDateTime(DateTime.Now),
-                    //Estado = false  // Puedes ajustar el estado según tus necesidades
-                };
-
-                _context.Pedidos.Add(pedido);
-                Console.WriteLine("Pasa por aca 2");
-                await _context.SaveChangesAsync();
-            }
-
-            // Crear el Carrito
-            var carrito = new Carrito
-            {
-                PedidoId = pedido.PedidoId,
-                ProductoId = productoId,
-                Cantidad = cantidad,
-                Estado = false
-            };
-
-            _context.Carritos.Add(carrito);
-            await _context.SaveChangesAsync();
-            Console.WriteLine("Pasa por aca 3");
 
             return RedirectToAction("Index");
         }
@@ -107,6 +98,55 @@ namespace Proyecto_prueba.Controllers
             await _context.SaveChangesAsync();
 
             return RedirectToAction("Index");
+        }
+        private void AddToCarritoInCookies(int productoId, int cantidad)
+        {
+            Console.WriteLine("se desvio y sigue por aca 1.3");
+            var carrito = GetCarritoFromCookies();
+
+            var item = carrito.FirstOrDefault(c => c.ProductoId == productoId);
+            if (item != null)
+            {
+                Console.WriteLine("esta por aca 1.4");
+                item.Cantidad += cantidad;
+            }
+            else
+            {
+                Console.WriteLine("esta por aca 1.5");
+                carrito.Add(new Carrito
+                {
+                    ProductoId = productoId,
+                    Cantidad = cantidad,
+                    Estado = false,
+                    Producto = _context.Productos.Find(productoId)  // Supone que el producto existe en la base de datos
+                });
+            }
+
+            SaveCarritoToCookies(carrito);
+        }
+
+        private List<Carrito> GetCarritoFromCookies()
+        {
+            Console.WriteLine("esta por aca 1.6");
+            var carritoCookie = Request.Cookies["Carrito"];
+            if (carritoCookie == null)
+            {
+                return new List<Carrito>();
+            }
+
+            return System.Text.Json.JsonSerializer.Deserialize<List<Carrito>>(carritoCookie);
+        }
+
+        private void SaveCarritoToCookies(List<Carrito> carrito)
+        {
+            Console.WriteLine("esta por aca 1.7");
+            var options = new Microsoft.AspNetCore.Http.CookieOptions
+            {
+                Expires = DateTime.Now.AddDays(7)
+            };
+
+            var carritoJson = System.Text.Json.JsonSerializer.Serialize(carrito);
+            Response.Cookies.Append("Carrito", carritoJson, options);
         }
 
 

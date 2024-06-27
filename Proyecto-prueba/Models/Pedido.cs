@@ -7,7 +7,7 @@ public partial class Pedido
 {
     public int PedidoId { get; set; }
 
-    public int? UsuarioId { get; set; }
+    public int UsuarioId { get; set; }
 
     public DateOnly? Fecha { get; set; }
 

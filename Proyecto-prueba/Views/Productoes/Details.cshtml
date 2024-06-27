@@ -1,35 +1,70 @@
 ﻿@model Proyecto_prueba.Models.Producto
 
 @{
-    Layout = "~/Views/Shared/Admin_layout.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <!DOCTYPE html>
-
-<html>
-    <head>
-        <meta name="viewport" content="width=device-width" />
-        <title>Details</title>
-    </head>
-  <body>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Detalles del Producto</title>
+    <link rel="stylesheet" href="~/css/product-gallery.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;500;700&display=swap">
+</head>
+<body>
     <div class="container">
-        <h2>Detalles del Producto</h2>
-        <div class="card">
-            @if (Model.ImagenProducto != null && Model.ImagenProducto.Length > 0)
-            {
-                <img src="data:image;base64,@Convert.ToBase64String(Model.ImagenProducto)" class="card-img-top" alt="Imagen del Producto">
-            }
-            <div class="card-body">
-                <h5 class="card-title">@Model.Nombre</h5>
-                <p class="card-text">Precio: @Model.Price</p>
-                <p class="card-text">@Model.Descripcion</p>
-                <p class="card-text">Categoría: @Model.Categoria</p>
-                <a href="@Url.Action("Index", "Productoes")" class="btn btn-primary">Volver</a>
+        <header>
+            <h1>Detalles del Producto</h1>
+        </header>
+
+        <div class="container-title">@Model.Nombre</div>
+
+        <main>
+            <div class="container-img">
+                @if (Model.ImagenProducto != null && Model.ImagenProducto.Length > 0)
+                {
+                    <img src="data:image;base64,@Convert.ToBase64String(Model.ImagenProducto)" alt="Imagen del Producto" />
+                }
             </div>
-        </div>
+
+            <div class="container-info-product">
+                <div class="container-price">
+                    <span>@Model.Price?.ToString("C")</span>
+                </div>
+
+                <div class="container-details-product">
+                    <p class="card-text">@Model.Descripcion</p>
+                    <p class="card-text">Categoría: @Model.Categoria</p>
+                </div>
+
+                <div class="container-add-cart">
+                    <a href="@Url.Action("Index", "Productoes")" class="btn btn-primary">Volver</a>
+                    <form asp-action="AddToCarrito" asp-controller="Carrito">
+                        <input type="hidden" name="productoId" value="@Model.ProductoId" />
+                        <input type="hidden" name="cantidad" value="1" />
+                        <button type="submit" class="btn-add-to-cart">
+                            <i class="fa-solid fa-plus"></i>
+                            Añadir al carrito
+                        </button>
+                    </form>
+                </div>
+
+                <div class="container-description">
+                    <div class="title-description">
+                        <h4>Descripción</h4>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                    <div class="text-description">
+                        <p>
+                            @Model.Descripcion
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </main>
     </div>
-
-
-    
-  </body>
+</body>
 </html>
