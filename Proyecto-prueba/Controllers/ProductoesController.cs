@@ -24,6 +24,19 @@ namespace Proyecto_prueba.Controllers
             return View(await _context.Productos.ToListAsync());
         }
 
+        public async Task<List<Producto>> BuscarProductosAsync(string searchString)
+        {
+            var productos = from p in _context.Productos
+                            select p;
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                productos = productos.Where(s => s.Nombre.Contains(searchString) || s.Descripcion.Contains(searchString));
+            }
+
+            return await productos.ToListAsync();
+        }
+
         // GET: Productoes/Details/5
         public async Task<IActionResult> Details(int? id)
         {

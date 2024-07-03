@@ -1,53 +1,86 @@
 ﻿@model IEnumerable<Proyecto_prueba.Models.Carrito>
 
 @{
+    Layout = null;
+}
+@{
     ViewData["Title"] = "Carrito";
 }
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="~/css/sb-admin-2.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/background.css" asp-append-version="true" />
 
-<h2>Carrito de compras</h2>
+<body>
 
-@if (Model.Any())
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Producto</th>
-                <th>Cantidad</th>
-                <th>Precio</th>
-                <th>Total</th>
-                <th>Acción</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>@item.Producto.Nombre</td>
-                    <td>@item.Cantidad</td>
-                    <td>@item.Producto.Price</td>
-                    <td>@(item.Cantidad * item.Producto.Price)</td>
-                    <td>
-                        <form asp-action="RemoveFromCarrito" method="post">
-                            <input type="hidden" name="carritoId" value="@item.CarritoId" />
-                            <button type="submit" class="btn btn-danger">Eliminar</button>
-                        </form>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-    <div class="row">
-        <div class="col-md-6">
-            <h3>Total: @Model.Sum(item => item.Cantidad * item.Producto.Price)</h3>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <h2>Carrito de compras</h2>
+            </div>
         </div>
-        <div class="col-md-6 text-right">
-            <button class="btn btn-primary">Pagar</button>
+
+        @if (Model.Any())
+        {
+            <div class="row mt-4">
+                <div class="col-md-12">
+                    <table id="tablesk" class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>Producto</th>
+                                <th>Cantidad</th>
+                                <th>Precio</th>
+                                <th>Total</th>
+                                <th>Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@item.Producto.Nombre</td>
+                                    <td>@item.Cantidad</td>
+                                    <td>@item.Producto.Price</td>
+                                    <td>@(item.Cantidad * item.Producto.Price)</td>
+                                    <td>
+                                        <form asp-action="RemoveFromCarrito" method="post">
+                                            <input type="hidden" name="carritoId" value="@item.CarritoId" />
+                                            <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-md-6">
+                    <h3 id="total-carrito">Total: @Model.Sum(item => item.Cantidad * item.Producto.Price)</h3>
+                </div>
+                <div class="col-md-6 text-right">
+                    <button class="btn btn-primary">Pagar</button>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="row mt-4">
+                <div class="col-md-12">
+                    <p>No hay productos en el carrito.</p>
+                </div>
+            </div>
+        }
+
+        <div class="row mt-4">
+            <div class="col-md-12 text-center">
+                <a id="boton-continuar" href="@Url.Action("Index", "Home")" class="btn btn-primary">Continuar comprando</a>
+            </div>
         </div>
     </div>
-}
-else
-{
-    <p>No hay productos en el carrito.</p>
-}
 
-<a href="@Url.Action("Index", "Home")" class="btn btn-primary">Continuar comprando</a>
+    <!-- Bootstrap JS y otros scripts si es necesario -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

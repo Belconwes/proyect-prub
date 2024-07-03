@@ -5,10 +5,10 @@
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     transition: transform 0.2s, box-shadow 0.2s;
 }
-card-img-top {
+.card-img-top {
     width: 100%;
     height: 200px; /* Ajusta la altura según tus necesidades */
-    object-fit: cover; /* Esto asegura que la imagen se recorte y ajuste para llenar el contenedor sin distorsionarse */
+    object-fit: contain; /* Esto asegura que la imagen se recorte y ajuste para llenar el contenedor sin distorsionarse */
 }
      
 
@@ -19,8 +19,8 @@ card-img-top {
 
     .card img {
         width: 100%;
-        height: auto;
-        object-fit: cover;
+        height: 200px;
+        object-fit: contain;
     }
 
 .card-body {
@@ -41,9 +41,14 @@ card-img-top {
     margin-bottom: 15px;
 }
 .btn-container {
+    height: 200px;
     text-align: center; /* Centra los botones dentro de su contenedor */
 }
 
 .btn {
     margin-top: 10px;
+}
+.btn-block {
+    display: block;
+    width: 100%;
 }

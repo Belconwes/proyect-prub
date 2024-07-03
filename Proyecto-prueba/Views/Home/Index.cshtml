@@ -14,9 +14,14 @@
 
     }
 </div>
-
 <div class="container mt-4">
-    <h2>Lista de Productos</h2>
+    <h2>PRODUCTOS DOUCE</h2>
+    <form asp-controller="Home" asp-action="Index" method="get" class="mb-4">
+        <div class="form-group">
+            <input type="text" name="searchString" class="form-control" placeholder="Buscar por nombre o descripción" />
+        </div>
+        <button type="submit" class="btn btn-primary">Buscar</button>
+    </form>
     <div class="row">
         @foreach (var producto in Model)
         {
@@ -35,8 +40,8 @@
 
                             <input type="hidden" name="productoId" value="@producto.ProductoId" />
                             <input type="hidden" name="cantidad" value="1" /> <!-- Agrega cantidad de valor de 1 unidad por defecto -->
-                            
-                            <button type="submit" class="btn btn-success">Añadir al Carrito</button>
+
+                            <button type="submit" class="btn btn-custom btn-block">Añadir al Carrito</button>
                         </form>
                     </div>
                 </div>

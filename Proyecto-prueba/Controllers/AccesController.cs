@@ -15,6 +15,7 @@ namespace Proyecto_prueba.Controllers
         {
             _pruebafContext = pruebafcontext;
         }
+
         public IActionResult AccessDenied()
         {
             return View();

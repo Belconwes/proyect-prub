@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 
 namespace Proyecto_prueba.Controllers
@@ -17,12 +18,25 @@ namespace Proyecto_prueba.Controllers
         {
             _context = context;
         }
-        public async Task <IActionResult> Index()
+        public async Task <IActionResult> Index(string searchString)
         {
-            var productos = await _context.Productos.ToListAsync();
+            var productos = await BuscarProductosAsync(searchString);
             return View(productos);
         }
-        [Authorize(policy: "AdminOrEmployedOnly")]
+        public async Task<List<Producto>> BuscarProductosAsync(string searchString)
+        {
+            var productos = from p in _context.Productos
+                            select p;
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                productos = productos.Where(s => s.Nombre.Contains(searchString) || s.Descripcion.Contains(searchString));
+            }
+
+            return await productos.ToListAsync();
+        }
+
+        [Authorize(policy: "AdminOnly")]
         public IActionResult Privacy()
         {
             return View();

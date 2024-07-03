@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="~/css/product-gallery.css">
     <link rel="stylesheet" href="~/Proyecto_prueba.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/Style-details.css">
+    <link rel="stylesheet" href="~/css/background.css" asp-append-version="true" />
 </head>
 <body>
     <header>
@@ -35,9 +36,13 @@
                             <li class="nav-item">
                                 <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Cerrar">Cerrar sesión</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Admin">Admin</a>
-                            </li>
+
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Admin">Admin</a>
+                                </li>
+                            }
                         }
                         @if (!User.Identity!.IsAuthenticated)
                         {

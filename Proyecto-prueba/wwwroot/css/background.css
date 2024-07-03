@@ -1,0 +1,52 @@
+﻿body {
+    background-image: url('/image/Fondov.jpg'); /* Ruta absoluta */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+#tablesk {
+    background-color: rgba(255, 255, 255, 0.8);
+}
+#total-carrito {
+    color: #fff; /* Color de texto blanco para el total */
+}
+#boton-continuar {
+    background-color: #007bff; /* Color de fondo azul del botón */
+    border-color: #007bff; /* Color de borde azul del botón */
+    color: #fff; /* Color de texto blanco del botón */
+}
+h2 {
+    background-color: rgba(255, 192, 203, 0.7); /* Color de fondo rosa con transparencia */
+    padding: 10px; /* Añadir espacio interno alrededor del texto */
+    border-radius: 5px; /* Añadir esquinas redondeadas al fondo */
+    color: #fff; /* Color del texto */
+    font-size: 28px; /* Tamaño de la fuente */
+    margin-top: 0; /* Eliminar margen superior predeterminado */
+}
+
+.bg-login-image {
+    background-image: url('~/image/DOUCE.jpg'); /* Ruta a tu imagen de fondo */
+    background-size: cover;
+    background-position: center;
+    height: 100%; /* Ajusta la altura según sea necesario */
+}
+
+.login-form {
+    background-color: #fff; /* Color de fondo para el formulario */
+    padding: 20px; /* Espacio interno alrededor del formulario */
+}
+.btn-custom {
+    background-color: #ff69b4; /* Cambiar a color rosa pastel */
+    border-color: #ff69b4; /* Cambiar a color rosa pastel */
+    color: #fff; /* Color de texto blanco del botón */
+    transition: background-color 0.3s ease;
+}
+
+    .btn-custom:hover {
+        background-color: #e0568b; /* Cambiar a color rosa pastel más oscuro al pasar el cursor */
+        border-color: #d94674; /* Cambiar a color rosa pastel más oscuro al pasar el cursor */
+    }
+
+

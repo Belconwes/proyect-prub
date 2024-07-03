@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using Proyecto_prueba.Models;
+using Proyecto_prueba.Servicios;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,10 +26,9 @@ builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
     options.AddPolicy("AdminOrEmployedOnly", policy => policy.RequireRole("Admin,Employed"));
-    options.AddPolicy("UserOnly", policy => policy.RequireRole("Employed"));
-    options.AddPolicy("EmployedOnly", policy => policy.RequireRole("User"));
+    options.AddPolicy("UserOnly", policy => policy.RequireRole("User"));
+    options.AddPolicy("EmployedOnly", policy => policy.RequireRole("Employed"));
 });
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

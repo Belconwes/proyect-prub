@@ -41,7 +41,7 @@
                 </div>
 
                 <div class="container-add-cart">
-                    <a href="@Url.Action("Index", "Productoes")" class="btn btn-primary">Volver</a>
+                    <a href="@Url.Action("Index", "Home")" class="btn btn-primary">Volver</a>
                     <form asp-action="AddToCarrito" asp-controller="Carrito">
                         <input type="hidden" name="productoId" value="@Model.ProductoId" />
                         <input type="hidden" name="cantidad" value="1" />
